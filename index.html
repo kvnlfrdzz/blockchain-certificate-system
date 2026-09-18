@@ -2,8 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="description" content="CertChain — Issue, collect, and verify tamper-proof certificates on the blockchain. Permanent. Immutable. Trustless.">
+  <meta property="og:title" content="CertChain — On-Chain Certificates">
+  <meta property="og:description" content="Issue, collect, and verify tamper-proof certificates on BOT Chain blockchain.">
+  <meta property="og:type" content="website">
+
   <title>CertChain &mdash; On-Chain Certificates</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate icon" href="assets/favicon.ico">
+
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.1/dist/ethers.umd.min.js" defer></script>
   <script src="js/app.js" defer></script>
@@ -32,21 +43,28 @@
   <!-- ===== HERO ===== -->
   <section class="hero" id="hero">
     <div class="hero__content">
-      <p class="hero__tag">Built on BOT Chain</p>
-      <h1 class="hero__title">Certificates that<br>can't be faked.</h1>
+      <p class="hero__tag">
+        <span class="footer__bot-dot"></span>
+        Built on BOT Chain
+      </p>
+      <h1 class="hero__title">Certificates that<br>can&rsquo;t be faked.</h1>
       <p class="hero__desc">Issue, collect, and verify credentials on the blockchain. Permanent. Tamper-proof. Trustless.</p>
       <div class="hero__actions">
         <button class="btn btn--primary" id="btn-hero-connect">Connect Wallet</button>
         <a href="#verify" class="btn btn--outline" id="btn-hero-verify">Verify a Certificate</a>
       </div>
-      <div class="hero__stats" id="hero-stats">
+      <div class="hero__stats">
         <div class="stat">
-          <span class="stat__num" id="stat-total">0</span>
+          <span class="stat__num" id="stat-total">—</span>
           <span class="stat__label">Certificates Issued</span>
         </div>
         <div class="stat">
-          <span class="stat__num" id="stat-chain">BOT Chain</span>
+          <span class="stat__num">BOT</span>
           <span class="stat__label">Network</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">100%</span>
+          <span class="stat__label">On-Chain</span>
         </div>
       </div>
     </div>
@@ -56,20 +74,20 @@
   <section class="section" id="issue" style="display:none;">
     <div class="section__inner">
       <h2 class="section__title">Issue Certificate</h2>
-      <p class="section__desc">Only the contract owner can issue new certificates.</p>
+      <p class="section__desc">Only the contract owner can issue new certificates on-chain.</p>
 
       <form class="form" id="form-issue">
         <div class="form__group">
           <label class="form__label" for="input-recipient">Recipient Wallet Address</label>
-          <input class="form__input" type="text" id="input-recipient" placeholder="0x..." required>
+          <input class="form__input" type="text" id="input-recipient" placeholder="0x..." autocomplete="off" spellcheck="false" required>
         </div>
         <div class="form__group">
           <label class="form__label" for="input-name">Recipient Name</label>
-          <input class="form__input" type="text" id="input-name" placeholder="Full name" required>
+          <input class="form__input" type="text" id="input-name" placeholder="Full name" autocomplete="off" required>
         </div>
         <div class="form__group">
           <label class="form__label" for="input-event">Event / Course Name</label>
-          <input class="form__input" type="text" id="input-event" placeholder="Build Week Hackathon Vol.2" required>
+          <input class="form__input" type="text" id="input-event" placeholder="e.g. Build Week Hackathon Vol.2" autocomplete="off" required>
         </div>
         <div class="form__group">
           <label class="form__label" for="input-category">Category</label>
@@ -89,14 +107,12 @@
   </section>
 
   <!-- ===== MY CERTIFICATES ===== -->
-  <section class="section" id="certificates">
+  <section class="section section--alt" id="certificates">
     <div class="section__inner">
       <h2 class="section__title">My Certificates</h2>
       <p class="section__desc">Connect your wallet to view certificates linked to your address.</p>
 
-      <div class="cert-grid" id="cert-grid">
-        <!-- Cards injected by JS -->
-      </div>
+      <div class="cert-grid" id="cert-grid"></div>
 
       <div class="empty" id="cert-empty">
         <p class="empty__icon">&#9671;</p>
@@ -106,15 +122,15 @@
   </section>
 
   <!-- ===== VERIFY ===== -->
-  <section class="section section--alt" id="verify">
+  <section class="section" id="verify">
     <div class="section__inner">
       <h2 class="section__title">Verify Certificate</h2>
-      <p class="section__desc">Enter a certificate ID to check its authenticity on the blockchain.</p>
+      <p class="section__desc">Enter a certificate ID to check its authenticity on-chain. No wallet required.</p>
 
       <div class="verify-box">
         <div class="form__group">
           <label class="form__label" for="input-verify-id">Certificate ID</label>
-          <input class="form__input" type="number" id="input-verify-id" placeholder="e.g. 1" min="1" required>
+          <input class="form__input" type="number" id="input-verify-id" placeholder="e.g. 1" min="1" inputmode="numeric">
         </div>
         <button class="btn btn--primary btn--full" id="btn-verify">Verify</button>
       </div>
@@ -135,23 +151,27 @@
           <span class="nav__logo-icon">&#9670;</span>
           CertChain
         </a>
-        <p class="footer__text">Verifiable on-chain certificates.<br>Built on BOT Chain.</p>
+        <p class="footer__text">Verifiable, immutable, tamper-proof certificates.<br>Powered by BOT Chain blockchain.</p>
       </div>
       <div class="footer__right">
         <div class="footer__col">
           <h4 class="footer__heading">Project</h4>
-          <a href="https://github.com/kvnlfrdzz/blockchain-certificate-system" target="_blank" class="footer__link">GitHub</a>
-          <a href="https://x.com/CertChainApp" target="_blank" class="footer__link">X (Twitter)</a>
+          <a href="https://github.com/kvnlfrdzz/blockchain-certificate-system" target="_blank" rel="noopener" class="footer__link">GitHub</a>
+          <a href="https://x.com/CertChainApp" target="_blank" rel="noopener" class="footer__link">X (Twitter)</a>
         </div>
         <div class="footer__col">
-          <h4 class="footer__heading">BOT Chain</h4>
-          <a href="https://botchain.ai" target="_blank" class="footer__link">botchain.ai</a>
-          <a href="https://scan.botchain.ai" target="_blank" class="footer__link">BOT Chain Explorer</a>
+          <h4 class="footer__heading">Partners</h4>
+          <a href="https://botchain.ai" target="_blank" rel="noopener" class="footer__link">botchain.ai</a>
+          <a href="https://scan.botchain.ai" target="_blank" rel="noopener" class="footer__link">BOT Chain Explorer</a>
         </div>
       </div>
     </div>
     <div class="footer__bottom">
       <p>&copy; 2026 CertChain. All rights reserved.</p>
+      <a href="https://botchain.ai" target="_blank" rel="noopener" class="footer__bot-badge">
+        <span class="footer__bot-dot"></span>
+        Deployed on BOT Chain
+      </a>
     </div>
   </footer>
 
