@@ -119,7 +119,28 @@ const $$ = (sel) => document.querySelectorAll(sel);
 document.addEventListener("DOMContentLoaded", () => {
   bindEvents();
   loadTotalCerts();
+  autoConnect();
 });
+
+// Auto-connect if wallet already connected before
+async function autoConnect() {
+  if (!window.ethereum) return;
+  try {
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+    if (accounts && accounts.length > 0) {
+      await switchNetwork();
+      provider = new ethers.BrowserProvider(window.ethereum);
+      signer = await provider.getSigner();
+      connectedAddress = await signer.getAddress();
+      contract = new ethers.Contract(CONFIG.contractAddress, CONTRACT_ABI, signer);
+      updateConnectedUI();
+      loadMyCertificates();
+      loadTotalCerts();
+    }
+  } catch (err) {
+    // Silently fail — auto-connect is best effort
+  }
+}
 
 function bindEvents() {
   // Connect wallet buttons
@@ -362,8 +383,9 @@ async function handleIssue(e) {
     // Reset form
     $("#form-issue").reset();
 
-    // Reload stats
+    // Reload stats + certificates real time
     loadTotalCerts();
+    await loadMyCertificates();
     showToast("Certificate issued", "success");
   } catch (err) {
     console.error("Issue error:", err);
