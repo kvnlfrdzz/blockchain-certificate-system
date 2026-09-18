@@ -147,6 +147,9 @@ function bindEvents() {
   $("#btn-connect").addEventListener("click", connectWallet);
   $("#btn-hero-connect").addEventListener("click", connectWallet);
 
+  // Disconnect button
+  $("#btn-disconnect").addEventListener("click", disconnectWallet);
+
   // Issue form
   $("#form-issue").addEventListener("submit", handleIssue);
 
@@ -271,10 +274,13 @@ function handleAccountChange(accounts) {
 function updateConnectedUI() {
   const short = connectedAddress.slice(0, 6) + "..." + connectedAddress.slice(-4);
 
-  // Update connect buttons
+  // Update connect button
   const btnConnect = $("#btn-connect");
   btnConnect.textContent = short;
   btnConnect.classList.add("connected");
+
+  // Show disconnect button
+  $("#btn-disconnect").style.display = "inline-flex";
 
   const btnHero = $("#btn-hero-connect");
   btnHero.textContent = short;
@@ -292,6 +298,11 @@ function updateConnectedUI() {
   }
 }
 
+function disconnectWallet() {
+  resetUI();
+  showToast("Wallet disconnected", "info");
+}
+
 function resetUI() {
   connectedAddress = null;
   provider = null;
@@ -301,6 +312,9 @@ function resetUI() {
   const btnConnect = $("#btn-connect");
   btnConnect.textContent = "Connect Wallet";
   btnConnect.classList.remove("connected");
+
+  // Hide disconnect button
+  $("#btn-disconnect").style.display = "none";
 
   const btnHero = $("#btn-hero-connect");
   btnHero.textContent = "Connect Wallet";

@@ -165,6 +165,23 @@ a {
   border-color: var(--c-success);
   color: var(--c-success);
 }
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn--disconnect {
+  background: transparent;
+  color: var(--c-error);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-size: 13px;
+  padding: 8px 16px;
+}
+
+.btn--disconnect:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--c-error);
+}
 
 .btn--full {
   width: 100%;
