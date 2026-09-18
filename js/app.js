@@ -6,7 +6,7 @@
 // ---- Config ----
 const CONFIG = {
   // Replace with your deployed contract address after deployment
-  contractAddress: "0x0000000000000000000000000000000000000000",
+  contractAddress: "0x398F3c91994815f70968e8b914173B84822067fE",
 
   // Owner wallet (Kevin)
   ownerAddress: "0x1c8F5CF7838624C9Ec7383EEBcc78A4aFc6f35fF",
