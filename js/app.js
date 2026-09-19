@@ -131,33 +131,44 @@ function initScreens() {
   const hasVisited = sessionStorage.getItem("certchain_visited");
 
   if (hasVisited) {
-    // Returning visit (refresh) — show loading screen
+    // Returning visit (refresh) — show loading screen, lock scroll briefly
     welcomeScreen.style.display = "none";
     loadingScreen.style.display = "flex";
+    document.body.style.overflow = "hidden";
 
-    // Init audio silently (music will play after load)
     Audio.init();
 
     setTimeout(() => {
       loadingScreen.classList.add("hide");
       setTimeout(() => {
         loadingScreen.style.display = "none";
+        document.body.style.overflow = "";
         Audio.startMusic();
       }, 500);
     }, 1300);
 
   } else {
-    // First visit — show welcome screen
+    // First visit — show welcome screen, lock scroll
     loadingScreen.style.display = "none";
     welcomeScreen.style.display = "flex";
+    document.body.style.overflow = "hidden";
 
     btnEnter.addEventListener("click", () => {
-      // Init audio and play on user gesture
       Audio.init();
       Audio.sfx.welcome();
       setTimeout(() => Audio.startMusic(), 800);
 
-  // Auto-connect if wallet already connected before
+      sessionStorage.setItem("certchain_visited", "1");
+      welcomeScreen.classList.add("hide");
+      setTimeout(() => {
+        welcomeScreen.style.display = "none";
+        document.body.style.overflow = "";
+      }, 900);
+    });
+  }
+}
+
+// Auto-connect if wallet already connected before
 async function autoConnect() {
   if (!window.ethereum) return;
   try {
