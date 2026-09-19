@@ -144,17 +144,30 @@ async function autoConnect() {
 
 function bindEvents() {
   // Connect wallet buttons
-  $("#btn-connect").addEventListener("click", connectWallet);
-  $("#btn-hero-connect").addEventListener("click", connectWallet);
+  $("#btn-connect").addEventListener("click", () => { Audio.sfx.click(); connectWallet(); });
+  $("#btn-hero-connect").addEventListener("click", () => { Audio.sfx.click(); connectWallet(); });
 
   // Disconnect button
-  $("#btn-disconnect").addEventListener("click", disconnectWallet);
+  $("#btn-disconnect").addEventListener("click", () => { Audio.sfx.disconnect(); disconnectWallet(); });
+
+  // Mute button
+  $("#btn-mute").addEventListener("click", () => {
+    const muted = Audio.toggleMute();
+    $("#icon-sound-on").style.display = muted ? "none" : "block";
+    $("#icon-sound-off").style.display = muted ? "block" : "none";
+    $("#btn-mute").classList.toggle("muted", muted);
+  });
 
   // Issue form
   $("#form-issue").addEventListener("submit", handleIssue);
 
   // Verify button
-  $("#btn-verify").addEventListener("click", handleVerify);
+  $("#btn-verify").addEventListener("click", () => { Audio.sfx.click(); handleVerify(); });
+
+  // All other buttons — generic click sound
+  document.querySelectorAll(".btn--outline, .nav__link, .footer__link").forEach(el => {
+    el.addEventListener("click", () => Audio.sfx.click());
+  });
 
   // Smooth scroll for nav links
   $$(".nav__link").forEach((link) => {
@@ -171,6 +184,7 @@ function bindEvents() {
   // Hero verify button
   $("#btn-hero-verify").addEventListener("click", (e) => {
     e.preventDefault();
+    Audio.sfx.click();
     $("#verify").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
@@ -216,6 +230,7 @@ async function connectWallet() {
     loadMyCertificates();
     loadTotalCerts();
 
+    if (typeof Audio !== "undefined" && Audio.sfx) Audio.sfx.connect();
     showToast("Wallet connected", "success");
   } catch (err) {
     console.error("Connect error:", err);
@@ -615,6 +630,13 @@ async function loadTotalCerts() {
 
 // ---- Toast Notifications ----
 function showToast(message, type = "info") {
+  // Play sound based on type
+  if (typeof Audio !== "undefined" && Audio.sfx) {
+    if (type === "success") Audio.sfx.success();
+    else if (type === "error") Audio.sfx.error();
+    else Audio.sfx.notify();
+  }
+
   const container = $("#toast-container");
   const toast = document.createElement("div");
   toast.className = `toast toast--${type}`;
@@ -623,7 +645,7 @@ function showToast(message, type = "info") {
 
   setTimeout(() => {
     toast.style.opacity = "0";
-    toast.style.transform = "translateY(12px)";
+    toast.style.transform = "translateX(12px)";
     toast.style.transition = "all 0.3s ease";
     setTimeout(() => toast.remove(), 300);
   }, 4000);

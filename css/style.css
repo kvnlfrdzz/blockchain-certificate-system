@@ -47,6 +47,8 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -57,6 +59,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  max-width: 100%;
+  position: relative;
 }
 
 a {
@@ -71,18 +75,27 @@ img, svg {
 
 /* ---------- Custom Scrollbar ---------- */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--c-bg);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--c-border-light);
+  background: linear-gradient(180deg, #2a2a2a, #1f1f1f);
   border-radius: 100px;
+  transition: background 0.2s;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--c-text-muted);
+  background: linear-gradient(180deg, var(--c-accent), #8fba00);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a2a transparent;
 }
 
 /* ---------- Selection ---------- */
@@ -859,7 +872,30 @@ select.form__input option {
   }
 
   .btn--connect,
-  .btn--disconnect {
+.btn--mute {
+  background: transparent;
+  color: var(--c-text-muted);
+  border: 1px solid var(--c-border);
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.btn--mute:hover {
+  color: var(--c-accent);
+  border-color: rgba(200,255,0,0.3);
+  background: var(--c-accent-dim);
+}
+.btn--mute.muted {
+  color: var(--c-text-muted);
+  border-color: var(--c-border);
+}
+
+.btn--disconnect {
     font-size: 12px;
     padding: 7px 12px;
   }
