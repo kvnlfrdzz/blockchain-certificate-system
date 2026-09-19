@@ -117,12 +117,47 @@ const $$ = (sel) => document.querySelectorAll(sel);
 
 // ---- Init ----
 document.addEventListener("DOMContentLoaded", () => {
+  initScreens();
   bindEvents();
   loadTotalCerts();
   autoConnect();
 });
 
-// Auto-connect if wallet already connected before
+// ---- Welcome / Loading Screen Logic ----
+function initScreens() {
+  const welcomeScreen = $("#welcome-screen");
+  const loadingScreen = $("#loading-screen");
+  const btnEnter = $("#btn-enter");
+  const hasVisited = sessionStorage.getItem("certchain_visited");
+
+  if (hasVisited) {
+    // Returning visit (refresh) — show loading screen
+    welcomeScreen.style.display = "none";
+    loadingScreen.style.display = "flex";
+
+    // Init audio silently (music will play after load)
+    Audio.init();
+
+    setTimeout(() => {
+      loadingScreen.classList.add("hide");
+      setTimeout(() => {
+        loadingScreen.style.display = "none";
+        Audio.startMusic();
+      }, 500);
+    }, 1300);
+
+  } else {
+    // First visit — show welcome screen
+    loadingScreen.style.display = "none";
+    welcomeScreen.style.display = "flex";
+
+    btnEnter.addEventListener("click", () => {
+      // Init audio and play on user gesture
+      Audio.init();
+      Audio.sfx.welcome();
+      setTimeout(() => Audio.startMusic(), 800);
+
+  // Auto-connect if wallet already connected before
 async function autoConnect() {
   if (!window.ethereum) return;
   try {
